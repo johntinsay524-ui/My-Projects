@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inventory Management</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-icon">▦</div>
+        <span class="brand-name">INVNT</span>
+      </div>
+      <nav class="nav">
+        <a class="nav-item active" onclick="showSection('inventory')">📦 Inventory</a>
+        <a class="nav-item" onclick="showSection('add')">➕ Add Item</a>
+        <a class="nav-item" onclick="showSection('summary')">📊 Summary</a>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="stat-box">
+          <span class="stat-num" id="totalItemsCount">0</span>
+          <span class="stat-label">Total Items</span>
+        </div>
+        <div class="stat-box warn">
+          <span class="stat-num" id="lowStockCount">0</span>
+          <span class="stat-label">Low Stock</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+
+      <!-- Header -->
+      <header class="topbar">
+        <div>
+          <h1 class="page-title" id="pageTitle">Inventory</h1>
+          <p class="page-sub" id="pageSub">Manage your stock in real-time</p>
+        </div>
+        <div class="search-wrap">
+          <input type="text" id="searchInput" placeholder="Search items..." oninput="filterItems()">
+        </div>
+      </header>
+
+      <!-- Add Item Form -->
+      <section id="addSection" class="card form-card" style="display:none;">
+        <h2 class="card-title">Add New Item</h2>
+        <form id="addItemForm" class="item-form">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Item ID</label>
+              <input type="text" name="itemID" placeholder="e.g. ITM-001" required>
+            </div>
+            <div class="form-group">
+              <label>Item Name</label>
+              <input type="text" name="itemName" placeholder="e.g. Wireless Mouse" required>
+            </div>
+            <div class="form-group">
+              <label>Category</label>
+              <input type="text" name="category" placeholder="e.g. Electronics" required>
+            </div>
+            <div class="form-group">
+              <label>Quantity</label>
+              <input type="number" name="quantity" placeholder="0" min="0" required>
+            </div>
+            <div class="form-group">
+              <label>Unit Price (₱)</label>
+              <input type="number" name="price" placeholder="0.00" min="0" step="0.01" required>
+            </div>
+            <div class="form-group">
+              <label>Supplier</label>
+              <input type="text" name="supplier" placeholder="e.g. TechCorp" required>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn-primary">Add to Inventory</button>
+            <button type="button" class="btn-secondary" onclick="showSection('inventory')">Cancel</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- Summary Section -->
+      <section id="summarySection" class="card" style="display:none;">
+        <h2 class="card-title">Inventory Summary</h2>
+        <div class="summary-grid" id="summaryGrid"></div>
+      </section>
+
+      <!-- Inventory Table -->
+      <section id="inventorySection" class="card">
+        <div class="table-header">
+          <span id="itemCount" class="item-count">0 items</span>
+          <div class="filter-wrap">
+            <select id="categoryFilter" onchange="filterItems()">
+              <option value="">All Categories</option>
+            </select>
+            <select id="stockFilter" onchange="filterItems()">
+              <option value="">All Stock</option>
+              <option value="low">Low Stock (&lt;10)</option>
+              <option value="ok">In Stock</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Item ID</th>
+                <th>Item Name</th>
+                <th>Category</th>
+                <th>Quantity</th>
+                <th>Unit Price</th>
+                <th>Total Value</th>
+                <th>Supplier</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="inventoryTableBody"></tbody>
+          </table>
+        </div>
+        <div id="emptyMsg" class="empty-msg">No items yet. Click "Add Item" to get started!</div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Edit Modal -->
+  <div id="editModal" class="modal-overlay" style="display:none;">
+    <div class="modal">
+      <h2 class="card-title">Edit Item</h2>
+      <form id="editForm" class="item-form">
+        <input type="hidden" id="editIndex">
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Item ID</label>
+            <input type="text" id="editItemID" required>
+          </div>
+          <div class="form-group">
+            <label>Item Name</label>
+            <input type="text" id="editItemName" required>
+          </div>
+          <div class="form-group">
+            <label>Category</label>
+            <input type="text" id="editCategory" required>
+          </div>
+          <div class="form-group">
+            <label>Quantity</label>
+            <input type="number" id="editQuantity" min="0" required>
+          </div>
+          <div class="form-group">
+            <label>Unit Price (₱)</label>
+            <input type="number" id="editPrice" min="0" step="0.01" required>
+          </div>
+          <div class="form-group">
+            <label>Supplier</label>
+            <input type="text" id="editSupplier" required>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn-primary">Save Changes</button>
+          <button type="button" class="btn-secondary" onclick="closeModal()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
