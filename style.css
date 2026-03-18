@@ -395,3 +395,21 @@ tbody td {
   width: 640px;
   max-width: 95vw;
 }
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  padding: 12px 22px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: all 0.3s ease;
+  z-index: 999;
+}
+.toast.show { opacity: 1; transform: translateY(0); }
+.toast-success { background: var(--green); color: #0f0f13; }
+.toast-error   { background: var(--red);   color: #fff; }
