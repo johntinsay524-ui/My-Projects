@@ -413,3 +413,68 @@ tbody td {
 .toast.show { opacity: 1; transform: translateY(0); }
 .toast-success { background: var(--green); color: #0f0f13; }
 .toast-error   { background: var(--red);   color: #fff; }
+
+/* Sell button */
+.btn-sell {
+  border: none;
+  padding: 5px 12px;
+  border-radius: 6px;
+  font-family: 'Syne', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  background: rgba(212,247,44,0.15);
+  color: var(--accent);
+}
+.btn-sell:hover { opacity: 0.8; }
+
+/* Sell modal */
+.modal-sm { width: 380px; }
+
+.sell-info {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 18px;
+}
+
+.sell-item-name {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.sell-item-stock {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.sell-item-stock strong {
+  color: var(--accent);
+  font-family: 'Space Mono', monospace;
+}
+
+.sell-preview {
+  font-family: 'Space Mono', monospace;
+  font-size: 13px;
+  margin-top: 10px;
+  min-height: 20px;
+  transition: color 0.2s;
+}
+
+.btn-sell-confirm {
+  background: var(--accent);
+  color: #0f0f13;
+  border: none;
+  padding: 11px 24px;
+  border-radius: 8px;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-sell-confirm:hover { background: var(--accent-dim); }

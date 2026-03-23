@@ -119,6 +119,8 @@
                 <th>Unit Price</th>
                 <th>Total Value</th>
                 <th>Supplier</th>
+                <th>Sold</th>
+                <th>Sold Value</th>
                 <th>Status</th>
                 <th>Action</th>
               </tr>
@@ -167,6 +169,29 @@
         <div class="form-actions">
           <button type="submit" class="btn-primary">Save Changes</button>
           <button type="button" class="btn-secondary" onclick="closeModal()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Sell Modal -->
+  <div id="sellModal" class="modal-overlay" style="display:none;">
+    <div class="modal modal-sm">
+      <h2 class="card-title">Sell Stock</h2>
+      <div class="sell-info">
+        <p class="sell-item-name" id="sellItemName">—</p>
+        <p class="sell-item-stock">Available: <strong id="sellAvailable">0</strong> units</p>
+      </div>
+      <form id="sellForm" class="item-form">
+        <input type="hidden" id="sellItemId">
+        <div class="form-group">
+          <label>Quantity to Sell</label>
+          <input type="number" id="sellQty" placeholder="0" min="1" required>
+        </div>
+        <div class="sell-preview" id="sellPreview"></div>
+        <div class="form-actions">
+          <button type="submit" class="btn-sell-confirm">Confirm Sale</button>
+          <button type="button" class="btn-secondary" onclick="closeSellModal()">Cancel</button>
         </div>
       </form>
     </div>
